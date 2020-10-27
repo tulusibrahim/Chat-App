@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="msg"></div>
+    <div id="wrap">
+        <form action="" id="sendmsg">
+            <input type="text" placeholder="Enter message" id="msgvalue">
+            <button id="btnsend" type="submit">Send</button>
+        </form>
+        <div id="usertype"></div>
+    </div>
+</body>
+<script>
+    'use strict';
+    let socket = io.connect('http://localhost:3001')
+    let btnsend = document.getElementById('btnsend')
+    let msgfield = document.getElementById('msg')
+    let isipesan = document.getElementById('msgvalue')
+    let roomname = document.getElementById('roomname')
+    let btnroom = document.getElementById('btnroom')
+    let usertype = document.getElementById('usertype')
+
+
+    //ask the user to get their name
+    let name = prompt("whats your name?")
+    incoming("You joined")
+
+    //send the name to the server
+    socket.emit('newuser', name)
+
+    //handle the username that just join to display it in the client
+    socket.on('newuserconnected', function (result) {
+        incoming(result + " just joined")
+    })
+
+    function incoming(namepeople) {
+        let usernew = document.createElement('div')
+        usernew.classList.add('neww')
+        usernew.style.display = 'flex'
+        usernew.style.justifyContent = 'center'
+        usernew.innerText = namepeople
+        msgfield.append(usernew)
+    }
+
+    //handle the user that just leave from the server to display it in client
+    socket.on('userleave', function (result) {
+        leave(result + " just leave")
+    })
+    function leave(namepeople) {
+        let userleave = document.createElement('div')
+        userleave.classList.add('leave')
+        userleave.style.display = 'flex'
+        userleave.style.justifyContent = 'center'
+        userleave.innerText = namepeople
+        msgfield.append(userleave)
+    }
+
+    //let the other know that someone is typing
+    isipesan.addEventListener('keyup', function () {
+        if (isipesan.value.length == 0) {
+            socket.emit('noTyping')
+        }
+        else if (isipesan.value.length > 0) {
+            socket.emit('typing', name)
+        }
+    })
+
+    //handle if someone gajadi ngetik/isipesan.value nya 0
+    socket.on('zerotype', function () {
+        usertype.innerText = ''
+    })
+
+    //handle 'the someone is typing' from server
+    socket.on('usertyping', function (result) {
+        usertype.innerText = result + " is typing..."
+    })
+
+    //send the msg to the server and server will handle it
+    btnsend.addEventListener('click', function (e) {
+        e.preventDefault()
+        let date = new Date()
+        let mnt = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
+        socket.emit('msg', isipesan.value)
+        adding(`You: ${isipesan.value}      ${date.getHours()}:${mnt}`)
+        isipesan.value = ''
+    })
+
+    //common function to create new element
+    function adding(message) {
+        let addnewmsg = document.createElement('div')
+        addnewmsg.classList.add('newmsg')
+        addnewmsg.innerText = message
+        msgfield.append(addnewmsg)
+    }
+
+    //handle the message that just spread from the server
+    socket.on('newmsg', function (result) {
+        adding(`${result.name}: ${result.message}   ${result.hour}:${result.minute}`)
+    })
+
+</script>
+<style>
+    .neww {
+        width: 90%;
+        height: 20px;
+        color: green;
+        font-weight: 500;
+    }
+
+    .leave {
+        width: 90%;
+        height: 20px;
+        color: red
+    }
+
+    .newmsg {
+        width: 90%;
+        height: 20px;
+        border: 1px solid black;
+        background-color: rgb(110, 122, 110);
+    }
+
+    #msg {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    #btnsend {
+        width: 10%;
+        height: 40px;
+    }
+
+    #msgvalue {
+        width: 90%;
+        height: 36px;
+    }
+
+    #sendmsg {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        justify-content: center;
+        bottom: 0px;
+    }
+
+    #wrap {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+
+</html>
