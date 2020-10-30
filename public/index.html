@@ -10,8 +10,8 @@
 </head>
 
 <body>
-    <div id="msg"></div>
-    <div id="wrap">
+    <div id="content">
+        <div id="msg"></div>
         <form action="" id="sendmsg">
             <input type="text" placeholder="Enter message" id="msgvalue">
             <button id="btnsend" type="submit">Send</button>
@@ -21,7 +21,9 @@
 </body>
 <script>
     'use strict';
-    let socket = io.connect('http://localhost:3001')
+    //biar bisa diakses dr device lain ganti localhost sm current ip
+    //let socket = io.connect('http://' + '192.168.100.5' + ':3001')
+    let socket = io.connect('http://192.168.100.5:3001')
     let btnsend = document.getElementById('btnsend')
     let msgfield = document.getElementById('msg')
     let isipesan = document.getElementById('msgvalue')
@@ -40,6 +42,7 @@
     //handle the username that just join to display it in the client
     socket.on('newuserconnected', function (result) {
         incoming(result + " just joined")
+        msgfield.scrollTop = msgfield.scrollHeight;
     })
 
     function incoming(namepeople) {
@@ -54,6 +57,7 @@
     //handle the user that just leave from the server to display it in client
     socket.on('userleave', function (result) {
         leave(result + " just leave")
+        msgfield.scrollTop = msgfield.scrollHeight;
     })
     function leave(namepeople) {
         let userleave = document.createElement('div')
@@ -77,11 +81,13 @@
     //handle if someone gajadi ngetik/isipesan.value nya 0
     socket.on('zerotype', function () {
         usertype.innerText = ''
+        msgfield.scrollTop = msgfield.scrollHeight;
     })
 
     //handle 'the someone is typing' from server
     socket.on('usertyping', function (result) {
         usertype.innerText = result + " is typing..."
+        msgfield.scrollTop = msgfield.scrollHeight;
     })
 
     //send the msg to the server and server will handle it
@@ -90,9 +96,17 @@
         let date = new Date()
         let mnt = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
         socket.emit('msg', isipesan.value)
-        adding(`You: ${isipesan.value}      ${date.getHours()}:${mnt}`)
+        addingmyself(`You: ${isipesan.value}      ${date.getHours()}:${mnt}`)
         isipesan.value = ''
+        msgfield.scrollTop = msgfield.scrollHeight;
     })
+
+    function addingmyself(message) {
+        let addnewmsg = document.createElement('div')
+        addnewmsg.classList.add('newmsgmyself')
+        addnewmsg.innerText = message
+        msgfield.append(addnewmsg)
+    }
 
     //common function to create new element
     function adding(message) {
@@ -105,10 +119,23 @@
     //handle the message that just spread from the server
     socket.on('newmsg', function (result) {
         adding(`${result.name}: ${result.message}   ${result.hour}:${result.minute}`)
+        msgfield.scrollTop = msgfield.scrollHeight;
     })
 
 </script>
 <style>
+    #usertype {
+        text-align: center;
+    }
+
+    .newmsgmyself {
+        width: 90%;
+        height: 20px;
+        background-color: rgb(110, 122, 110);
+        display: flex;
+        justify-content: flex-end;
+    }
+
     .neww {
         width: 90%;
         height: 20px;
@@ -125,43 +152,45 @@
     .newmsg {
         width: 90%;
         height: 20px;
-        border: 1px solid black;
-        background-color: rgb(110, 122, 110);
+        background-color: rgb(157, 161, 157);
+        border: none;
+    }
+
+    #btnsend {
+        width: 25%;
+        height: 100%;
+    }
+
+    #msgvalue {
+        width: 90%;
+        height: 100%;
+    }
+
+    #sendmsg {
+        width: 100%;
+        height: 8vh;
+        display: flex;
+        align-items: center;
+        position: fixed;
+        justify-content: center;
+        bottom: 0;
+        position: fixed;
     }
 
     #msg {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         flex-direction: column;
-    }
-
-    #btnsend {
-        width: 10%;
-        height: 40px;
-    }
-
-    #msgvalue {
-        width: 90%;
-        height: 36px;
-    }
-
-    #sendmsg {
+        max-height: 90vh;
         width: 100%;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        position: fixed;
-        justify-content: center;
-        bottom: 0px;
+        overflow-y: auto;
     }
 
-    #wrap {
+
+    #content {
         width: 100%;
         height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
 
     * {
