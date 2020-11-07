@@ -99,6 +99,10 @@
         addingmyself(`You: ${isipesan.value}      ${date.getHours()}:${mnt}`)
         isipesan.value = ''
         msgfield.scrollTop = msgfield.scrollHeight;
+        socket.on('zerotype', function () {
+            usertype.innerText = ''
+            msgfield.scrollTop = msgfield.scrollHeight;
+        })
     })
 
     function addingmyself(message) {
