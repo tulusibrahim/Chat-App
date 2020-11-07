@@ -23,7 +23,7 @@
     'use strict';
     //biar bisa diakses dr device lain ganti localhost sm current ip
     //let socket = io.connect('http://' + '192.168.100.5' + ':3001')
-    let socket = io.connect('http://192.168.100.5:' + process.env.PORT)
+    let socket = io.connect('http://192.168.100.5:3001')
     let btnsend = document.getElementById('btnsend')
     let msgfield = document.getElementById('msg')
     let isipesan = document.getElementById('msgvalue')
