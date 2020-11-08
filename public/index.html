@@ -6,11 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 
 <body>
     <div id="content">
+        <div class="pos-f-t">
+            <div class="collapse" id="navbarToggleExternalContent">
+                <div class="bg-dark p-4">
+                    <div id="peoplelist"></div>
+                </div>
+            </div>
+            <nav class="navbar navbar-dark bg-dark">
+                <h4 style="color: whitesmoke;">See who else is here</h4>
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </nav>
+        </div>
         <div id="msg"></div>
         <form action="" id="sendmsg">
             <input type="text" placeholder="Enter message" id="msgvalue">
@@ -18,6 +41,8 @@
         </form>
         <div id="usertype"></div>
     </div>
+
+
 </body>
 <script>
     'use strict';
@@ -30,6 +55,8 @@
     let roomname = document.getElementById('roomname')
     let btnroom = document.getElementById('btnroom')
     let usertype = document.getElementById('usertype')
+    let pplonline = document.getElementById('peoplelist')
+    let newnameelem = document.getElementById('newname')
 
 
     //ask the user to get their name
@@ -38,6 +65,25 @@
 
     //send the name to the server
     socket.emit('newuser', name)
+
+    //send the name to server and push to an array in server
+    socket.emit('newname', name)
+
+    let usernew = document.createElement('div')
+    usernew.classList.add('newname')
+    usernew.style.color = 'white'
+    pplonline.append(usernew)
+    socket.on('namefromserver', function (result) {
+        let newname = []
+        newname = result.join(", ")
+        console.log(newname)
+        if (newnameelem) {
+            newnameelem.remove()
+            usernew.innerText = `There's ${newname} here`
+        } else {
+            usernew.innerText = `There's ${newname} here`
+        }
+    })
 
     //handle the username that just join to display it in the client
     socket.on('newuserconnected', function (result) {
@@ -53,6 +99,10 @@
         usernew.innerText = namepeople
         msgfield.append(usernew)
     }
+
+    socket.on('leavename', function (result) {
+        usernew.innerText = `There's ${result} here`
+    })
 
     //handle the user that just leave from the server to display it in client
     socket.on('userleave', function (result) {
@@ -164,6 +214,7 @@
     #btnsend {
         width: 25%;
         height: 100%;
+        background-color: aquamarine;
     }
 
     #msgvalue {

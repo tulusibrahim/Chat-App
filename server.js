@@ -1,15 +1,17 @@
 let express = require('express');       //import express library and put it in a variable
 let socket = require('socket.io');      //import socket.io and put it in a variable
 let app = express()                     //create new express application
-let server = app.listen(process.env.PORT)
+let server = app.listen(3001)
 
 app.use(express.static('public'))       //after type localhost://3001, public folder will open which is index.html, etc
 let io = socket(server)
 let userinfo = {}
+let listname = []
 
 
 io.on('connection', function (socket) {
     console.log("new connection : " + socket.id)
+
 
     //handle the 'msg' from client then spread it to every other connected client
     socket.on('msg', function (result) {
@@ -38,6 +40,9 @@ io.on('connection', function (socket) {
     socket.on('newuser', function (name) {
         userinfo[socket.id] = name
         socket.broadcast.emit('newuserconnected', name)
+        listname.push(name)
+        console.log(listname)
+        io.emit('namefromserver', listname)
     })
 
     //broadcast that a user has disconnected
@@ -45,5 +50,10 @@ io.on('connection', function (socket) {
         name = userinfo[socket.id]
         console.log(`${name} just disconnected`)
         socket.broadcast.emit('userleave', name)
+        let deletename = listname.indexOf(name)
+        if (deletename > -1) {
+            listname.splice(deletename, 1)
+        }
+        io.emit('leavename', listname)
     })
 })
