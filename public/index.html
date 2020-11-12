@@ -19,26 +19,33 @@
 
 <body>
     <div id="content">
-        <div class="pos-f-t">
-            <div class="collapse" id="navbarToggleExternalContent">
-                <div class="bg-dark p-4">
-                    <div id="peoplelist"></div>
+        <div id="wrappernav">
+            <div class="pos-f-t">
+                <div class="collapse" id="navbarToggleExternalContent">
+                    <div class="p-4" style="background-color: #5cdb95;">
+                        <h5>See who else is here</h5>
+                        <div id="peoplelist"></div>
+                    </div>
                 </div>
+                <nav class="navbar" style="background-color: #5cdb95;">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
+                        aria-expanded="false" aria-label="Toggle navigation"
+                        style="border: 1px black solid; border-color: whitesmoke;">
+                        <span><img src="./menu.png" style="width: 30px; height: 30px;"></span>
+                    </button>
+                </nav>
             </div>
-            <nav class="navbar navbar-dark bg-dark">
-                <h4 style="color: whitesmoke;">See who else is here</h4>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </nav>
         </div>
-        <div id="msg"></div>
-        <form action="" id="sendmsg">
-            <input type="text" placeholder="Enter message" id="msgvalue">
-            <button id="btnsend" type="submit">Send</button>
-        </form>
+        <div id="msg">
+
+        </div>
+        <div id="wrapperform">
+            <form action="" id="sendmsg">
+                <input type="text" placeholder=" Enter message" id="msgvalue">
+                <button id="btnsend" type="submit">Send</button>
+            </form>
+        </div>
         <div id="usertype"></div>
     </div>
 
@@ -96,6 +103,7 @@
         usernew.classList.add('neww')
         usernew.style.display = 'flex'
         usernew.style.justifyContent = 'center'
+        usernew.style.zIndex = '-3'
         usernew.innerText = namepeople
         msgfield.append(usernew)
     }
@@ -184,15 +192,20 @@
     }
 
     .newmsgmyself {
-        width: 90%;
-        height: 20px;
+        width: fit-content;
+        height: 25px;
+        right: 0px;
+        position: relative;
         background-color: rgb(110, 122, 110);
         display: flex;
         justify-content: flex-end;
+        border-radius: 3px;
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
 
     .neww {
-        width: 90%;
+        width: 100%;
         height: 20px;
         color: green;
         font-weight: 500;
@@ -205,16 +218,22 @@
     }
 
     .newmsg {
-        width: 90%;
-        height: 20px;
-        background-color: rgb(157, 161, 157);
-        border: none;
+        width: fit-content;
+        height: 25px;
+        right: 0px;
+        position: relative;
+        background-color: rgb(110, 122, 110);
+        display: flex;
+        justify-content: flex-start;
+        border-radius: 3px;
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
 
     #btnsend {
         width: 25%;
         height: 100%;
-        background-color: aquamarine;
+        background-color: #f76c6c;
         border: 1px slategray solid;
     }
 
@@ -227,7 +246,7 @@
 
     #sendmsg {
         width: 100%;
-        height: 8vh;
+        height: 10%;
         display: flex;
         align-items: center;
         position: fixed;
@@ -236,20 +255,42 @@
         position: fixed;
     }
 
+    #wrappernav {
+        width: 100%;
+        height: 8vh;
+    }
+
+    #wrapperform {
+        width: 100%;
+        height: 10vh;
+    }
+
+    div.newmsg {
+        align-items: flex-start;
+    }
+
+    div.newmsgmyself {
+        align-items: flex-end;
+    }
+
     #msg {
         display: flex;
-        align-items: center;
-        justify-content: flex-start;
         flex-direction: column;
-        max-height: 90vh;
+        height: 82vh;
         width: 100%;
         overflow-y: auto;
     }
 
-
     #content {
         width: 100%;
         height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    body {
+        font-size: larger;
+        background-color: #90b687;
     }
 
     * {
