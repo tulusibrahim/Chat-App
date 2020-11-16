@@ -22,16 +22,16 @@
         <div id="wrappernav">
             <div class="pos-f-t">
                 <div class="collapse" id="navbarToggleExternalContent">
-                    <div class="p-4" style="background-color: #5cdb95;">
-                        <h5>See who else is here</h5>
+                    <div class="p-4" style="background-color: #222831;">
+                        <h5 style="color: white;">See who else is here</h5>
                         <div id="peoplelist"></div>
                     </div>
                 </div>
-                <nav class="navbar" style="background-color: #5cdb95;">
+                <nav class="navbar" style="background-color: #222831; border-bottom: 1px;">
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
                         aria-expanded="false" aria-label="Toggle navigation"
-                        style="border: 1px black solid; border-color: whitesmoke;">
+                        style="border: 1px black solid; border-color: goldenrod;">
                         <span><img src="./menu.png" style="width: 30px; height: 30px;"></span>
                     </button>
                 </nav>
@@ -192,16 +192,15 @@
     }
 
     .newmsgmyself {
-        width: fit-content;
+        width: 90%;
         height: 25px;
-        right: 0px;
-        position: relative;
-        background-color: rgb(110, 122, 110);
+        background-color: rgb(110, 122, 110, 0.2);
         display: flex;
         justify-content: flex-end;
         border-radius: 3px;
         margin-top: 2px;
         margin-bottom: 2px;
+        color: white;
     }
 
     .neww {
@@ -209,6 +208,8 @@
         height: 20px;
         color: green;
         font-weight: 500;
+        margin-top: 5px;
+        margin-bottom: 5px;
     }
 
     .leave {
@@ -218,39 +219,41 @@
     }
 
     .newmsg {
-        width: fit-content;
+        width: 90%;
         height: 25px;
-        right: 0px;
-        position: relative;
-        background-color: rgb(110, 122, 110);
+        background-color: rgb(110, 122, 110, 0.2);
         display: flex;
         justify-content: flex-start;
         border-radius: 3px;
         margin-top: 2px;
         margin-bottom: 2px;
+        color: white;
     }
 
     #btnsend {
         width: 25%;
         height: 100%;
-        background-color: #f76c6c;
+        background-color: #e16428;
+        border-radius: 10px;
         border: 1px slategray solid;
     }
 
     #msgvalue {
-        width: 90%;
+        width: 70%;
+        font-size: large;
         height: 100%;
         border: 1px slategray solid;
-        ;
+        border-radius: 10px;
     }
 
     #sendmsg {
         width: 100%;
-        height: 10%;
+        height: 7%;
+        font-size: large;
         display: flex;
         align-items: center;
         position: fixed;
-        justify-content: center;
+        justify-content: space-around;
         bottom: 0;
         position: fixed;
     }
@@ -262,21 +265,14 @@
 
     #wrapperform {
         width: 100%;
-        height: 10vh;
-    }
-
-    div.newmsg {
-        align-items: flex-start;
-    }
-
-    div.newmsgmyself {
-        align-items: flex-end;
+        height: 7vh;
     }
 
     #msg {
         display: flex;
         flex-direction: column;
-        height: 82vh;
+        align-items: center;
+        height: 84vh;
         width: 100%;
         overflow-y: auto;
     }
@@ -290,7 +286,7 @@
 
     body {
         font-size: larger;
-        background-color: #90b687;
+        background-color: #1B1B1B;
     }
 
     * {
