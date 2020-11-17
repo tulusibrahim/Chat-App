@@ -183,8 +183,10 @@
 
     //handle the message that just spread from the server
     socket.on('newmsg', function (result) {
-        let datee = new Date()
-        adding(`${result.name}: ${result.message}   ${datee.getHours().toLocaleString()}:${datee.getMinutes().toLocaleString()}`)
+        let date = new Date()
+        let hour = date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`
+        let mnt = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
+        adding(`${result.name}: ${result.message}   ${hour.toLocaleString()}:${mnt.toLocaleString()}`)
         msgfield.scrollTop = msgfield.scrollHeight;
     })
 
