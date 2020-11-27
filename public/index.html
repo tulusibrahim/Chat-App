@@ -14,32 +14,32 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/6c74545ce9.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&display=swap" rel="stylesheet">
     <title>Chatingan yu</title>
 </head>
 
 <body>
+    <div id="splash">
+        <h2 style="font-family: 'Lato', sans-serif !important; color: white; letter-spacing: 0.7px;">Chatingyu</h2>
+    </div>
+    <div id="prompwrapper">
+        <form id="promp" action="">
+            <input type="text" placeholder="What should we call you?" id="nameinput" required>
+        </form>
+    </div>
+
+    <div id="layover">
+        <h3>See who else is here</h3>
+        <div id="peoplelist"></div>
+    </div>
+
     <div id="content">
         <div id="wrappernav">
-            <div class="pos-f-t">
-                <div class="collapse" id="navbarToggleExternalContent">
-                    <div class="p-4" style="background-color: #222831;">
-                        <h5 style="color: white;">See who else is here</h5>
-                        <div id="peoplelist"></div>
-                    </div>
-                </div>
-                <nav class="navbar" style="background-color: #222831; border-bottom: 1px;">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent"
-                        aria-expanded="false" aria-label="Toggle navigation"
-                        style="border: 1px black solid; border-color: goldenrod;">
-                        <span><img src="./menu.png" style="width: 30px; height: 30px;"></span>
-                    </button>
-                </nav>
-            </div>
+            <p>Chatingyu</p>
+            <span class="fas fa-bars fa-2x" id="option" style="cursor: pointer;"></span>
         </div>
         <div id="msg">
-
-
             <div id="usertype"></div>
         </div>
         <form action="" id="sendmsg">
@@ -50,7 +50,7 @@
 
 
 </body>
-<script>
+<script defer>
     'use strict';
     //biar bisa diakses dr device lain ganti localhost sm current ip
     //let socket = io.connect('http://' + '192.168.100.5' + ':3001')
@@ -63,17 +63,59 @@
     let usertype = document.getElementById('usertype')
     let pplonline = document.getElementById('peoplelist')
     let newnameelem = document.getElementById('newname')
+    let splash = document.getElementById('splash')
+    let prompwrapper = document.getElementById('prompwrapper')
+    let promp = document.getElementById('promp')
+    let nameinput = document.getElementById('nameinput')
+    let option = document.getElementById('option')
+    let layover = document.getElementById('layover')
+    let name
 
 
-    //ask the user to get their name
-    let name = prompt("whats your name?")
-    incoming("You joined")
 
-    //send the name to the server
-    socket.emit('newuser', name)
+    window.onload = function () {
+        splash.style.opacity = '1'
+        splash.style.zIndex = '2'
+        setTimeout(() => {
+            splash.style.opacity = '0'
+            splash.style.zIndex = '-1'
+            prompwrapper.style.opacity = '0.9'
+            prompwrapper.style.zIndex = '4'
+        }, 2400);
+    }
 
-    //send the name to server and push to an array in server
-    socket.emit('newname', name)
+    layover.addEventListener('click', function () {
+        layover.style.width = '30vw'
+        layover.style.opacity = '0'
+        layover.style.zIndex = '-1'
+        option.classList.add('fa-bars')
+    })
+
+    option.addEventListener('click', function () {
+        if (option.classList.contains('fa-bars')) {
+            layover.style.width = '100vw'
+            layover.style.opacity = '0.8'
+            layover.style.zIndex = '2'
+            option.classList.remove('fa-bars')
+        }
+    })
+
+    promp.onsubmit = function (e) {
+        e.preventDefault()
+        name = nameinput.value
+        //ask the user to get their name
+        incoming("You joined")
+
+        //send the name to the server
+        socket.emit('newuser', name)
+
+        //send the name to server and push to an array in server
+        socket.emit('newname', name)
+
+        prompwrapper.style.opacity = '0'
+        prompwrapper.style.zIndex = '-1'
+    }
+
 
     let usernew = document.createElement('div')
     usernew.classList.add('newname')
@@ -192,6 +234,71 @@
 
 </script>
 <style>
+    #promp #nameinput {
+        width: 100%;
+        border: none;
+        outline: none;
+    }
+
+    #nameinput::placeholder {
+        text-align: center;
+    }
+
+    #prompwrapper {
+        width: 100vw;
+        height: 100vh;
+        background-color: rgb(151, 140, 140);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        z-index: -1;
+        opacity: 0;
+        transition: .4s;
+    }
+
+    #promp {
+        width: fit-content;
+        height: fit-content;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-radius: 10px;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    #splash {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        background-color: rgb(51, 119, 51);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        z-index: -1;
+        transition: .3s;
+    }
+
+    #layover {
+        width: 30vw;
+        height: 100vh;
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background-color: #374B4A;
+        color: white;
+        position: fixed;
+        right: 0;
+        transition: .6s;
+        z-index: -1;
+    }
+
     #usertype {
         text-align: center;
     }
@@ -240,7 +347,7 @@
 
     #btnsend {
         width: 25%;
-        height: 100%;
+        height: 40px;
         background-color: #e16428;
         border-radius: 10px;
         border: 1px slategray solid;
@@ -249,14 +356,17 @@
     #msgvalue {
         width: 70%;
         font-size: large;
-        height: 100%;
+        height: 40px;
+        position: relative;
         border: 1px slategray solid;
         border-radius: 10px;
+        outline: none;
+        border: none;
     }
 
     #sendmsg {
         width: 100%;
-        height: 40px;
+        height: 6vh;
         font-size: large;
         display: flex;
         align-items: center;
@@ -264,11 +374,26 @@
         justify-content: space-around;
         bottom: 0;
         position: fixed;
+        padding-bottom: 10px;
+    }
+
+    #wrappernav p {
+        margin: 0;
+        padding: 0;
+        margin-left: 10px;
+    }
+
+    #wrappernav span {
+        margin-right: 10px;
     }
 
     #wrappernav {
         width: 100%;
-        max-height: 25vh;
+        height: 10vh;
+        background-color: wheat;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     #msg {
@@ -276,8 +401,9 @@
         flex-direction: column;
         align-items: center;
         height: 84vh;
+        overflow: auto;
         width: 100%;
-        overflow-y: auto;
+        margin-bottom: 10vh;
     }
 
     #content {
@@ -285,11 +411,22 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        z-index: 1;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    body::-webkit-scrollbar {
+        display: none;
+    }
+
+    body::-webkit-scrollbar {
+        display: none;
     }
 
     body {
         font-size: larger;
-        background-color: #1B1B1B;
+        background-color: #B8D5B8;
+        scrollbar-width: 0;
     }
 
     * {
