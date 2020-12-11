@@ -1,7 +1,7 @@
 let express = require('express');       //import express library and put it in a variable
 let socket = require('socket.io');      //import socket.io and put it in a variable
 let app = express()                     //create new express application
-let server = app.listen(process.env.PORT)
+let server = app.listen(process.env.PORT || 5050)
 
 app.use(express.static('public'))       //after type localhost://3001, public folder will open which is index.html, etc
 let io = socket(server)

@@ -17,6 +17,7 @@
         defer></script>
     <script src="https://kit.fontawesome.com/6c74545ce9.js" crossorigin="anonymous" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&display=swap" rel="stylesheet" defer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js" defer></script>
     <title>Chatingan yu</title>
 </head>
 
@@ -72,6 +73,7 @@
     let layover = document.getElementById('layover')
     let name
 
+    gsap.from('.newmsgmyself', { duration: 1, opacity: 0 })
 
 
     window.onload = function () {
@@ -89,6 +91,10 @@
         layover.style.width = '30vw'
         layover.style.opacity = '0'
         layover.style.zIndex = '-1'
+        gsap.to('#option', {
+            opacity: 1,
+            duration: .7
+        })
         option.classList.add('fa-bars')
     })
 
@@ -98,6 +104,10 @@
             layover.style.opacity = '0.8'
             layover.style.zIndex = '2'
             option.classList.remove('fa-bars')
+            gsap.to('#option', {
+                opacity: 0,
+                duration: .7
+            })
         }
     })
 
@@ -194,9 +204,21 @@
         msgfield.scrollTop = msgfield.scrollHeight;
     })
 
+    let counter = 0
+    function addingmyself(message) {
+        counter += 1
+        let addnewmsg = document.createElement('div')
+        addnewmsg.classList.add('newmsgmyself')
+        addnewmsg.setAttribute('id', counter)
+        addnewmsg.innerText = message
+        msgfield.append(addnewmsg)
+    }
+
+    let counterr = 0
     //send the msg to the server and server will handle it
     btnsend.addEventListener('click', function (e) {
         e.preventDefault()
+        counterr += 1
         let date = new Date()
         let mnt = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
         socket.emit('msg', isipesan.value)
@@ -207,19 +229,16 @@
             usertype.innerText = ''
             msgfield.scrollTop = msgfield.scrollHeight;
         })
+        let idd = document.getElementById(counterr)
+        gsap.from(idd, { duration: .7, opacity: 0, x: '100%', ease: 'bounce.out' })
     })
-
-    function addingmyself(message) {
-        let addnewmsg = document.createElement('div')
-        addnewmsg.classList.add('newmsgmyself')
-        addnewmsg.innerText = message
-        msgfield.append(addnewmsg)
-    }
 
     //common function to create new element
     function adding(message) {
+        counter += 1
         let addnewmsg = document.createElement('div')
         addnewmsg.classList.add('newmsg')
+        addnewmsg.setAttribute('id', counter)
         addnewmsg.innerText = message
         msgfield.append(addnewmsg)
     }
@@ -227,9 +246,12 @@
     //handle the message that just spread from the server
     socket.on('newmsg', function (result) {
         let date = new Date()
+        counterr += 1
         let hour = date.getHours() < 10 ? `0${date.getHours()}` : `${date.getHours()}`
         let mnt = date.getMinutes() < 10 ? `0${date.getMinutes()}` : `${date.getMinutes()}`
         adding(`${result.name}: ${result.message}   ${hour.toLocaleString()}:${mnt.toLocaleString()}`)
+        let idd = document.getElementById(counterr)
+        gsap.from(idd, { duration: .7, opacity: 0, x: '-100%', ease: 'bounce.out' })
         msgfield.scrollTop = msgfield.scrollHeight;
     })
 
@@ -404,6 +426,7 @@
         overflow: auto;
         width: 100%;
         margin-bottom: 10vh;
+        overflow-x: hidden;
     }
 
     #content {
