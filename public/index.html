@@ -23,7 +23,8 @@
 
 <body>
     <div id="splash">
-        <h2 style="font-family: 'Lato', sans-serif !important; color: white; letter-spacing: 0.7px;">Chatingyu</h2>
+        <h2 style="font-family: 'Lato', sans-serif !important; color: white; letter-spacing: 0.7px; ">
+            Chatingyu</h2>
     </div>
     <div id="prompwrapper">
         <form id="promp" action="">
@@ -34,11 +35,19 @@
     <div id="layover">
         <h3>See who else is here</h3>
         <div id="peoplelist"></div>
+        <div style="bottom: 0; position: absolute;">
+            Background By <a
+                href="https://pixabay.com/id/users/pencilparker-7519217/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3045129"
+                style="text-decoration: none; color: whitesmoke;">pencil
+                parker</a> from <a
+                href="https://pixabay.com/id/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3045129"
+                style="text-decoration: none; color: whitesmoke;">Pixabay</a>
+        </div>
     </div>
 
     <div id="content">
         <div id="wrappernav">
-            <p>Chatingyu</p>
+            <p style="font-weight: 800;">Chatingyu</p>
             <span class="fas fa-bars fa-2x" id="option" style="cursor: pointer;"></span>
         </div>
         <div id="msg">
@@ -47,7 +56,7 @@
         <div id="wrapperform">
             <form action="" id="sendmsg">
                 <input type="text" placeholder=" Enter message" id="msgvalue">
-                <button id="btnsend" type="submit">Send</button>
+                <button id="btnsend" type="submit"><i class="fas fa-paper-plane"></i></button>
             </form>
         </div>
     </div>
@@ -84,6 +93,7 @@
             splash.style.zIndex = '-1'
             prompwrapper.style.opacity = '0.9'
             prompwrapper.style.zIndex = '4'
+            nameinput.focus()
         }, 2400);
     }
 
@@ -210,6 +220,7 @@
         let addnewmsg = document.createElement('div')
         addnewmsg.classList.add('newmsgmyself')
         addnewmsg.setAttribute('id', counter)
+        addnewmsg.style.color = 'black'
         addnewmsg.innerText = message
         msgfield.append(addnewmsg)
     }
@@ -240,6 +251,7 @@
         addnewmsg.classList.add('newmsg')
         addnewmsg.setAttribute('id', counter)
         addnewmsg.innerText = message
+        addnewmsg.style.color = 'black'
         msgfield.append(addnewmsg)
     }
 
@@ -368,15 +380,16 @@
     }
 
     #btnsend {
-        width: 25%;
+        width: 40px;
         height: 40px;
-        background-color: #e16428;
-        border-radius: 10px;
+        background-color: #555B6E;
+        border-radius: 50%;
         border: 1px slategray solid;
+        cursor: pointer;
     }
 
     #msgvalue {
-        width: 70%;
+        width: 85%;
         font-size: large;
         height: 40px;
         position: relative;
@@ -384,6 +397,7 @@
         border-radius: 10px;
         outline: none;
         border: none;
+        background-color: #BEE3DB;
     }
 
     #sendmsg {
@@ -396,6 +410,12 @@
         justify-content: space-around;
         /* bottom: 0; */
         position: fixed;
+    }
+
+    @media screen and (min-width: 530px) {
+        #msgvalue {
+            width: 90%;
+        }
     }
 
     #wrappernav p {
@@ -411,7 +431,7 @@
     #wrappernav {
         width: 100%;
         /* height: 10vh; */
-        background-color: wheat;
+        background-color: #89B0AE;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -448,6 +468,7 @@
         display: grid;
         grid-template-rows: 10vh 82vh 8vh;
         font-family: 'Montserrat', sans-serif;
+        backdrop-filter: blur(5px);
     }
 
     body::-webkit-scrollbar {
@@ -460,8 +481,12 @@
 
     body {
         font-size: larger;
-        background-color: #B8D5B8;
+        /* background-color: #B8D5B8; */
         scrollbar-width: 0;
+        background-image: url('./set-3045129_1920.jpg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 
     * {
