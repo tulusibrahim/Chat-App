@@ -208,7 +208,7 @@
 
     //handle 'the someone is typing' from server
     socket.on('usertyping', function (result) {
-        usertype.style.color = "white"
+        usertype.style.color = "black"
         usertype.innerText = result + " is typing..."
         msgfield.append(usertype)
         msgfield.scrollTop = msgfield.scrollHeight;
