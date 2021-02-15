@@ -44,7 +44,7 @@ layover.addEventListener('click', function () {
 
 option.addEventListener('click', function () {
     if (option.classList.contains('fa-bars')) {
-        layover.style.width = '100vw'
+        layover.style.width = '30vw'
         layover.style.opacity = '0.8'
         layover.style.zIndex = '2'
         option.classList.remove('fa-bars')
